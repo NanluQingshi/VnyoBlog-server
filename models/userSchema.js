@@ -26,7 +26,7 @@ const userSchema = new Schema({
   },
   token: {
     type: String,
-    defaule: ''
+    default: ''
   },
   // 收藏
   collections: [],
