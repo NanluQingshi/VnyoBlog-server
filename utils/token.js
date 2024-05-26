@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken')
 
 // 创建 Token 对象
 const Token = {
+  // 加密密钥
+  SECRET_KEY : 'This is My Blog',
+
   /**
    * @description: 加密 token
    * @param {*} _id ：要加密的数据-用户文档 id
@@ -36,3 +39,5 @@ const Token = {
     }
   }
 }
+
+module.exports = Token
