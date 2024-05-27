@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
 })
 
 // 用户登录
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     // 从请求体中获取数据
     const { username, password } = req.body
@@ -81,6 +81,42 @@ router.get('/login', async (req, res) => {
     res.status(500).send({
       code: 700,
       msg: err.message
+    })
+  }
+})
+
+// 获取用户信息
+router.get('/getInfo', async (req, res) => {
+  const tokenObj = Token.tokenVerification(req)
+  console.log(tokenObj)
+  if (tokenObj === Token.ERROR_MESSAGE) {
+    return res.send({
+      code: 701,
+      msg: '无效 token'
+    })
+  }
+  const _id = tokenObj._id
+  try {
+    const doc = await UserModel.findOne({ _id })
+    return res.send({
+      code: 701,
+      msg: '获取用户信息成功~',
+      data: {
+        userInfo: { 
+          username: doc.username,  
+          gender: doc.gender,
+          age: doc.age,
+          gender: doc.gender,
+          collections: doc.collections,
+          likes: doc.likes,
+          articles: doc.articles
+        }
+      }
+    })
+  } catch (err) {
+    return res.send({
+      code: 700,
+      msg: '用户名或密码错误!'
     })
   }
 })
