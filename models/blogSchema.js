@@ -14,12 +14,10 @@ const blogSchema = new Schema({
   _id: String,
   title: String,  // 标题
   author: String, // 作者
-  addTime: String,  // 添加时间
-  updateTime: String, // 修改时间
   cover: String,  // 封面路径
   content: String,  // 内容
   label: [],    // 博客标签
-  collect: {  // 收藏量
+  collections: {  // 收藏量
     type: Number,
     default: 0
   },
@@ -30,7 +28,11 @@ const blogSchema = new Schema({
   likes: {
     type: Number,   // 点赞量
     default: 0
-  }
+  },
+  comments: [] // 评论
+}, {
+  // 自动添加 createdAt 和 updatedAt 两个字段，用于记录文档的创建时间和最后更新的时间
+  timestamps: true
 })
 
 // 创建 BlogModel 模型，模型会映射到 blog 集合
