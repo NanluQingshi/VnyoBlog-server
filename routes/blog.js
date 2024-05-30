@@ -45,15 +45,33 @@ router.post('/publish', async (req, res) => {
       author: user_id
     })
     await blog.save()
+
+    // 插入到用户表中
+    const result = await UserModel.findOneAndUpdate(
+      { _id: user_id },
+      {
+        "$addToSet": {
+          articles: blog
+        }
+      }
+    )
+
+    console.log('修改博客,用户表: ', result)
+
     res.send({
       code: 701,
       msg: '博客发布成功',
       data: {
-        author: doc.username,
-        title: blog.title,
-        cover: blog.cover,
-        content: blog.content,
-        label: blog.label
+        blog: blog,
+        authorInfo: {
+          username,
+          age,
+          gender,
+          email,
+          collections,
+          likes,
+          articles
+        }
       }
     })
   } catch (err) {
@@ -63,9 +81,6 @@ router.post('/publish', async (req, res) => {
       data: {}
     })
   }
-
-  // 插入到用户表中
-
 })
 
 module.exports = router
