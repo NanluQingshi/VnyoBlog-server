@@ -113,7 +113,7 @@ router.get('/getInfo', async (req, res) => {
           username: doc.username,
           gender: doc.gender,
           age: doc.age,
-          gender: doc.gender,
+          email: doc.email,
           collections: doc.collections,
           likes: doc.likes,
           articles: doc.articles
@@ -130,7 +130,7 @@ router.get('/getInfo', async (req, res) => {
 })
 
 // 修改用户信息
-router.post('/update', async (req, res) => {
+router.post('/updateInfo', async (req, res) => {
   const tokenObj = Token.tokenVerification(req)
   if (tokenObj === Token.ERROR_MESSAGE) {
     res.send({
