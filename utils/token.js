@@ -25,8 +25,8 @@ const Token = {
     let token = jwt.sign(
       { _id },
       jwt_key,
-      // 设置过期时间 5 min
-      { expiresIn: 60 * 5 }
+      // 设置过期时间 2 h
+      { expiresIn: 60 * 60 * 2 }
     )
     return token
   },
@@ -39,10 +39,12 @@ const Token = {
    */  
   tokenDecryption(token, jwt_key) {
     try {
-      // 解密 token，解出来的是加密对象 _id
+      // 解密 token，解出来的是 { _id, iat, exp }
       let secretKey = jwt.verify(token, jwt_key)
+      console.log(secretKey)
       return secretKey
-    } catch {
+    } catch(err) {
+      console.log(err)
       return this.ERROR_MESSAGE
     }
   },
@@ -53,6 +55,7 @@ const Token = {
    * @return {*}
    */  
   tokenVerification(req) {
+    console.log('req.headers.token: ', req.headers.token)
     return this.tokenDecryption(req.headers.token, this.SECRET_KEY)
   }
 }

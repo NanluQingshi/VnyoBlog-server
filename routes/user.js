@@ -20,19 +20,22 @@ router.post('/register', async (req, res) => {
       return res.send({
         // 701 操作成功
         code: 701,
-        msg: "注册成功~"
+        msg: "注册成功~",
+        data: {}
       })
     } else {
       return res.send({
         code: 701,
-        msg: '该用户已存在!'
+        msg: '该用户已存在!',
+        data: {}
       })
     }
-  } catch(err) {
+  } catch (err) {
     return res.status(500).send({
       // 700 操作失败
       code: 700,
-      msg: err.message
+      msg: err.message,
+      data: {}
     })
   }
 })
@@ -68,19 +71,22 @@ router.post('/login', async (req, res) => {
     } else if (doc === null) {
       return res.send({
         code: 700,
-        msg: '该用户不存在!'
+        msg: '该用户不存在!',
+        data: {}
       })
     } else {
       return res.send({
         code: 700,
-        msg: '用户名或密码错误!'
+        msg: '用户名或密码错误!',
+        data: {}
       })
     }
   } catch (err) {
     console.log(err)
     res.status(500).send({
       code: 700,
-      msg: err.message
+      msg: err.message,
+      data: {}
     })
   }
 })
@@ -92,7 +98,8 @@ router.get('/getInfo', async (req, res) => {
   if (tokenObj === Token.ERROR_MESSAGE) {
     return res.send({
       code: 701,
-      msg: '无效 token'
+      msg: '无效 token',
+      data: {}
     })
   }
   const _id = tokenObj._id
@@ -102,8 +109,8 @@ router.get('/getInfo', async (req, res) => {
       code: 701,
       msg: '获取用户信息成功~',
       data: {
-        userInfo: { 
-          username: doc.username,  
+        userInfo: {
+          username: doc.username,
           gender: doc.gender,
           age: doc.age,
           gender: doc.gender,
@@ -116,7 +123,53 @@ router.get('/getInfo', async (req, res) => {
   } catch (err) {
     return res.send({
       code: 700,
-      msg: '用户名或密码错误!'
+      msg: '用户名或密码错误!',
+      data: {}
+    })
+  }
+})
+
+// 修改用户信息
+router.post('/update', async (req, res) => {
+  const tokenObj = Token.tokenVerification(req)
+  if (tokenObj === Token.ERROR_MESSAGE) {
+    res.send({
+      code: 701,
+      msg: '无效 token',
+      data: {}
+    })
+  }
+  const user_id = tokenObj._id
+  const { username, gender, age, email } = req.body
+  try {
+    await UserModel.updateOne(
+      { _id: user_id },
+      {
+        "$set": {
+          username,
+          gender,
+          age,
+          email
+        }
+      }
+    )
+    res.send({
+      code: 701,
+      msg: '信息修改成功~',
+      data: {
+        userInfo: {
+          username,
+          gender,
+          age,
+          email
+        }
+      }
+    })
+  } catch (err) {
+    res.status(500).send({
+      code: 700,
+      msg: err.message,
+      data: {}
     })
   }
 })
