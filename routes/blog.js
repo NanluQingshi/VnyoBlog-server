@@ -29,6 +29,7 @@ router.post('/publish', async (req, res) => {
   // 记得用 await
   const doc = await UserModel.findOne({ _id: user_id })
   // console.log(doc)
+
   // 从请求体中取出数据
   const { title, label, cover, content } = req.body
 
@@ -42,7 +43,7 @@ router.post('/publish', async (req, res) => {
       cover,
       content,
       label,
-      author: user_id
+      author: user_id,
     })
     await blog.save()
 
@@ -64,15 +65,34 @@ router.post('/publish', async (req, res) => {
       data: {
         blog: blog,
         authorInfo: {
-          username,
-          age,
-          gender,
-          email,
-          collections,
-          likes,
-          articles
+          username: result.username,
+          age: result.age,
+          gender: result.gender,
+          email: result.email,
+          collections: result.collections,
+          likes: result.likes,
+          articles: result.articles
         }
       }
+    })
+  } catch (err) {
+    return res.status(500).send({
+      code: 700,
+      msg: err.message,
+      data: {}
+    })
+  }
+})
+
+// 获取博客列表 - 不需要用户登录
+router.get('/getAll', async (req, res) => {
+  try {
+    const result = await BlogModel.find({})
+    // console.log(result)
+    res.send({
+      code: 701,
+      msg: '获取所有博客成功~',
+      data: result
     })
   } catch (err) {
     return res.status(500).send({

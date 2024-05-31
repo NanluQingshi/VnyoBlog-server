@@ -5,6 +5,7 @@
  */
 // 导入 mongoose 库
 const mongoose = require('mongoose')
+const dayjs = require('dayjs')
 
 // 定义 Schema 对象，用于定义文档结构
 const Schema = mongoose.Schema
@@ -32,7 +33,9 @@ const blogSchema = new Schema({
   comments: [] // 评论
 }, {
   // 自动添加 createdAt 和 updatedAt 两个字段，用于记录文档的创建时间和最后更新的时间
-  timestamps: true
+  timestamps: {
+    currentTime: () => dayjs().format('YYYY-MM-DD HH:mm:ss')
+  }
 })
 
 // 创建 BlogModel 模型，模型会映射到 blog 集合

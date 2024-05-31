@@ -331,6 +331,11 @@ finalhandler@1.1.1:
     statuses "~1.4.0"
     unpipe "~1.0.0"
 
+formatDate@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmmirror.com/formatDate/-/formatDate-1.0.0.tgz#a9cea71390c3fc90a2f160d3ce4905f4d49df757"
+  integrity sha512-3ZwFvtrxvlgxl/pX6ypijt2I8yLmpW/FjHfj5TLqJeXMdkMo/eENY8z8aRYnz1sJmpLZCdcu57Iurv1BDuJKHw==
+
 forwarded@0.2.0:
   version "0.2.0"
   resolved "https://registry.npmmirror.com/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
